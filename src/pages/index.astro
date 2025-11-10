@@ -1,0 +1,437 @@
+---
+// src/pages/index.astro
+// Lógica que corre en el servidor (SSR)
+const INSTRUCTOR_NAME = "Dra. Elara Vessali";
+const PROFESSIONS = "Instructora de Matemáticas Avanzadas Online";
+
+// SEO Metadata (Los stickers para que Google y las redes sociales entiendan tu web)
+const seo = {
+    title: `${INSTRUCTOR_NAME} | Clases de Álgebra, Cálculo y Programación Lineal`,
+    description: `Aprende Álgebra Lineal, Cálculo Numérico y Programación Lineal con la Dra. Elara Vessali. 
+    Sesiones 1:1 ultrarrápidas vía videoconferencia.`,
+    url: "https://tumatematicaavanzada.com", // Reemplaza esto con tu URL real
+    image: "https://tumatematicaavanzada.com/social-card.jpg", // Asegúrate de crear esta imagen
+};
+---
+
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-solid-900.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/webfonts/fa-brands-400.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css" as="style">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+
+    <link rel="preload" 
+        href="/Tutora-Elara-Vessali.jpg" 
+        as="image">
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{seo.title}</title>
+    <meta name="description" content={seo.description}>
+
+    <meta property="og:title" content={seo.title}>
+    <meta property="og:description" content={seo.description}>
+    <meta property="og:url" content={seo.url}>
+    <meta property="og:image" content={seo.image}>
+    <meta property="og:type" content="website">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content={seo.title}>
+    <meta name="twitter:description" content={seo.description}>
+    <meta name="twitter:image" content={seo.image}>
+
+<link rel="stylesheet" 
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap" 
+      media="print" 
+      onload="this.media='all'">
+
+<noscript>
+    <link rel="stylesheet" 
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Fira+Code:wght@400;600&display=swap">
+</noscript>
+
+<style>
+
+   :root {
+    /* Tipografía para sofisticación */
+    --pico-font-family: 'Inter', system-ui, sans-serif;
+    
+    /* Variables para la paleta de colores */
+    --pico-color-primary: #00FFFF;       /* Cian para Énfasis y Botones */
+    --pico-color-primary-hover: #00dddd; /* Cian más oscuro al pasar el ratón */
+    --pico-color-inverse: #ffffff;
+    --gradient-start: #0f0f2a;          /* Azul Oscuro Intenso */
+    --gradient-end: #14083a;            /* Morado Oscuro */
+}
+
+/* 2. Fondo Dinámico */
+body {
+    background: linear-gradient(135deg, var(--gradient-start) 0%, var(--gradient-end) 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+code, .codigo-mat { 
+    font-family: 'Fira Code', monospace;
+    font-size: 1.05em; /* Ligeramente más grande */
+    color: var(--pico-color-primary); /* Cian, para destacar */
+}
+
+/* Para que los títulos sean muy bold */
+h1, h2, h3 {
+    font-weight: 700;
+}
+
+    /* 3. Animación de Entrada Suave (Aún rápida, pero viva) */
+    main article, header {
+        opacity: 0;
+        transform: translateY(20px);
+        animation: fadeIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; /* Curva de animación más suave */
+    }
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    /* 4. Efectos al Interactuar (Hacer que la página 'responda') */
+    
+    /* Efecto Hover en las tarjetas/artículos */
+    article {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        border: none; /* Quitamos el borde genérico de Pico */
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* Sombra elegante */
+    }
+    
+    /* Al pasar el ratón, se levanta ligeramente (Interacción placentera) */
+    article:hover {
+        transform: translateY(-5px); 
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.6);
+    }
+    
+
+    /* 5. Estilización del Contenedor de BIO (Manteniendo el centrado sin fondo) */
+    .bio-highlight {
+        text-align: center;
+        max-width: 800px;
+        margin: 2rem auto; /* Más espacio para respirar */
+        line-height: 1.8; /* Mejor legibilidad (UX) */
+        color: var(--pico-color-inverse); /* Asegurar buen contraste */
+    }
+    .bio-highlight h2 {
+        font-weight: 700;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--pico-color-primary); /* Cian */
+    }
+
+    /* Micro-interacción: Rotar Emojis al pasar el ratón */
+header h1, header p {
+    transition: color 0.3s ease;
+}
+header hgroup:hover h1, header hgroup:hover p {
+    color: var(--pico-color-primary-light); /* Resaltar texto */
+}
+
+/* Animación de rotación del emoji de la instructora al interactuar */
+.instructor-emoji {
+    display: inline-block;
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94); /* Curva suave */
+}
+
+header hgroup:hover .instructor-emoji {
+    transform: rotate(10deg) scale(1.1); /* Ligeramente rotado y más grande */
+}
+
+/* Botón Flotante de WhatsApp (El botón que siempre está a la mano) */
+.whatsapp-float {
+    /* Mantiene la posición fija */
+    position: fixed;
+    bottom: 90px; /* Un poco más alto para dejar espacio */
+    right: 30px;
+    z-index: 1000; 
+    
+    /* Forma Redonda (Círculo Perfecto) */
+    width: 60px;
+    height: 60px;
+    border-radius: 50%; /* Esfera */
+    
+    /* Quitar el padding y centrar el ícono */
+    padding: 0;
+    display: flex; /* Usamos Flexbox para centrar bien el ícono */
+    justify-content: center;
+    align-items: center;
+    
+    /* Animación al pasar el ratón (la que ya tenías) */
+    transition: transform 0.3s ease, background-color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5); /* Sombra para que flote más */
+}
+
+.whatsapp-float i {
+    font-size: 1.5rem; /* Hace el ícono grande y visible */
+    line-height: 1; /* Para ayudar con el centrado */
+}
+
+.whatsapp-float:hover {
+    transform: scale(1.1);
+    /* No hace falta filter: brightness(1.2) porque ya tiene hover de Pico.css */
+}
+
+.high-cta {
+    /* Sobreescribe el color de Pico para este botón específico */
+    background-color: #ff9900 !important; 
+    border-color: #ff9900 !important;
+    color: #14083a !important; /* Texto oscuro para máxima legibilidad */
+    font-weight: bold;
+    box-shadow: 0 0 15px rgba(255, 153, 0, 0.5); /* Brillo sutil */
+}
+.high-cta:hover {
+    background-color: #e68a00 !important; /* Un poco más oscuro al pasar el ratón */
+    transform: scale(1.05); /* Mantenemos la vida */
+}
+
+footer {
+    padding-bottom: 120px; /* Asegura un padding generoso para no chocar con el botón flotante */
+    margin-top: 4rem; /* Más espacio entre la última sección y el footer */
+}
+
+/* 1. Contenedor principal: Imagen + Títulos alineados */
+/* Si el .header-flex-container está en el borde mismo, 
+   dale un padding interno para mover todo el bloque. */
+.header-flex-container {
+    display: flex;
+    align-items: center; 
+    gap: 1rem; /* Espacio reducido entre la imagen y los títulos */
+    margin-bottom: 1rem;
+
+    /* 🚨 Añadir un padding izquierdo al contenedor principal */
+    padding-left: 2rem; /* Mueve todo el bloque 1rem a la derecha */
+}
+
+/* 2. HGROUP: Hace que el H1 y el P estén en línea */
+.inline-hgroup {
+    display: flex; /* Convierte hgroup en contenedor flexible */
+    align-items: baseline; /* Alinea por la base de la fuente (h1 y p) */
+    gap: 1rem; /* Espacio entre h1 y p */
+    margin-bottom: 0; /* Pico.css añade margen, lo eliminamos aquí */
+}
+
+.inline-hgroup h1 {
+    margin: 0; /* Elimina el margen por defecto del h1 */
+}
+
+/* Estilo para la profesión al lado del h1 */
+.inline-hgroup .professor-tag {
+    /* Estilo del texto que acompaña al h1 */
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: var(--pico-secondary); /* Usa un color para destacarlo */
+    opacity: 0.8;
+    margin: 0;
+}
+
+
+/* 3. IMAGEN: Nuevo tamaño más pequeño (100px) */
+.tutor-image-container-small {
+    /* Nuevo tamaño fijo para la imagen y CLS */
+    min-width: 100px; 
+    height: 100px;
+
+    /* Añadir margen a la derecha (para separarla del texto) 
+       y un margen a la izquierda (para separarla del borde de la pantalla) */
+    margin-right: 2rem; /* Espacio entre la imagen y el hgroup */
+    margin-left: 0; /* Aseguramos que no tenga margen izquierdo si ya lo tiene */
+}
+
+.tutor-image-container-small img {
+    /* Hereda la forma de círculo */
+    display: block;
+    width: 100%; 
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--pico-primary); /* Borde de color primario para destacar */
+}
+
+/* 4. Comportamiento en MÓVIL (Todo debe apilarse) */
+@media (max-width: 768px) {
+    .header-flex-container {
+        /* En móvil, eliminamos el padding para que el contenido se centre correctamente */
+        padding-left: 0;
+        flex-direction: column; 
+        text-align: center;
+    }
+    
+    .tutor-image-container-small {
+        /* Centramos la imagen en móvil */
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .inline-hgroup {
+        /* En móvil, los títulos también se apilan verticalmente para mejor lectura */
+        flex-direction: column; 
+        align-items: center;
+        gap: 0.2rem;
+    }
+}
+</style>
+
+</head>
+<body>
+
+
+      <header class="hero-section">
+  
+  <div class="header-flex-container"> 
+    
+    <div class="tutor-image-container-small">
+              <img 
+                src="/Tutora-Elara-Vessali.jpg" 
+                alt="Retrato profesional de la Dra. Elara Vessali, experta en Matemáticas Aplicadas."
+                loading="eager"
+                width="300" 
+                height="300"
+                
+                srcset="/Tutora-Elara-Vessali.jpg 150w, 
+                        /Tutora-Elara-Vessali.jpg 300w, 
+                        /Tutora-Elara-Vessali.jpg 600w"
+                
+                sizes="(max-width: 600px) 150px, 300px"
+              >
+            </div>
+
+        <hgroup class="inline-hgroup">
+            <h1>{INSTRUCTOR_NAME}</h1>
+            <p class="professor-tag">{PROFESSIONS}</p>
+        </hgroup>
+
+     
+  </div>
+
+    </header>
+
+    <main class="container">
+        
+
+<div class="bio-highlight">
+        <h2>
+            <span class="instructor-emoji">👩‍🏫</span> La Arquitecta de la Simplicidad
+        </h2>
+        <p>Con un Ph.D. en Matemáticas, mi misión es desmitificar los números. 
+        Las sesiones son 1:1, enfocadas en la comprensión intuitiva de los conceptos: 
+    estructuras sólidas y cero overhead mental. 
+Usamos Python/Matlab para visualizar, no solo memorizar. 
+</p>
+    </div>
+
+        <article id="algebra" style="animation-delay: 0.2s;">
+            <h2>🧩 Álgebra Lineal: La Base de la IA</h2>
+            <p class="codigo-mat">Dominarás matrices, vectores y transformaciones. Clases enfocadas en los algoritmos que usan
+             estos conceptos en Machine Learning.</p>
+        </article>
+        
+        <article id="calculo" style="animation-delay: 0.3s;">
+            <h2>📈 Cálculo Numérico: La Optimización Precisa</h2>
+            <p class="codigo-mat">Aprende los métodos que usan los ingenieros para resolver problemas. 
+            Te enseñaré a programar soluciones que son tan rápidas como la carga de esta pagina de aterrizaje, 
+        sin teoría innecesaria.</p>
+        </article>
+
+        <article id="programacion" style="animation-delay: 0.4s;">
+            <h2>💰 Programación Lineal: Maximizando Recursos</h2>
+            <p class="codigo-mat">Descubre el método Simplex y cómo optimizar la toma de decisiones. 
+            Este es el lenguaje de los negocios; te doy las herramientas para hablarlo con fluidez.</p>
+        </article>
+
+       
+        
+        <article id="testimonios" style="animation-delay: 0.5s;">
+            <h2 style="text-align: center;">Resultados Reales. Cero Fricción.</h2>
+            <p style="text-align: center;">Mira lo que dicen mis estudiantes:</p>
+            
+            <div class="grid">
+                <figure>
+                    <blockquote style="min-height: 120px;">
+                        "Gracias a la Dra. Elara, no solo pasé Cálculo Numérico, 
+                        sino que por fin entendí la lógica detrás de los algoritmos. 
+                        Su enfoque es revolucionario."
+                    </blockquote>
+                    <figcaption>
+                        — J. Pérez, Ingeniero de Software, <span class="codigo-mat">Algoritmos</span>
+                    </figcaption>
+                </figure>
+
+                <figure>
+                    <blockquote style="min-height: 120px;">
+                        "El Álgebra Lineal me aterrorizaba, pero las sesiones 1:1 fueron claras y 
+                        sin overhead. Me dio la confianza para seguir con mi carrera de Data Science."
+                    </blockquote>
+                    <figcaption>
+                        — A. Flores, Científica de Datos, <span class="codigo-mat">Data Science</span>
+                    </figcaption>
+                </figure>
+                
+                <figure>
+                    <blockquote style="min-height: 120px;">
+                        "Su método es directo y eficiente. Se siente como una mentoría, 
+                        no como una clase aburrida. Velocidad pura en la comprensión de la 
+                        Programación Lineal."
+                    </blockquote>
+                    <figcaption>
+                        — L. Morales, Consultora de Operaciones, <span class="codigo-mat">Optimización</span>
+                    </figcaption>
+                </figure>
+            </div>
+        </article>
+      
+        
+        <article id="cierre-final" style="text-align: center; animation-delay: 0.6s;">
+            <h2>¿Listo para Desbloquear tu Potencial Matemático?</h2>
+            <p class="codigo-mat">La única forma de dominar estas materias es con mentoría 1:1.
+             Olvídate de los cursos pregrabados. Invierte en sesiones personalizadas que garantizan 
+         una comprensión sin overhead. Tu éxito está a un click.</p>
+            
+            <a href="https://wa.me/XXXXXXXXXX?text=Hola%2C%20quisiera%20agendar%20mi%20consulta%20gratuita%20sobre%20%C3%81lgebra%20Lineal." target="_blank" role="button" class="contrast large high-cta">
+                ¡Agenda tu Consulta Gratuita AHORA!
+            </a>
+            <p style="margin-top: 1rem; font-size: 0.9em;">(Solo 5 cupos disponibles este mes para nuevos alumnos)</p>
+        </article>
+    </main>
+    
+ <a href="https://wa.me/XXXXXXXXXX?text=Hola%2C%20quisiera%20agendar%20mi%20consulta%20gratuita%20sobre%20%C3%81lgebra%20Lineal." target="_blank" class="whatsapp-float" role="button" title="Contactar por WhatsApp">
+    <i class="fa-solid fa-phone-volume"></i>
+</a>
+    <footer class="container">
+        <hr />
+        <div style="display: flex; justify-content: space-between; flex-wrap: wrap; padding: 1rem 0;">
+            
+            <div style="flex-basis: 300px; padding-bottom: 1rem;">
+                <small>
+                    © {new Date().getFullYear()} {INSTRUCTOR_NAME}. Todos los derechos reservados.<br>
+                    
+                </small>
+            </div>
+
+           
+
+            <div style="flex-basis: 200px; padding-bottom: 1rem;">
+                <h3>Sígueme</h3>
+                <nav>
+                    <a href="#" target="_blank" title="LinkedIn"><i class="fa-brands fa-linkedin fa-lg" ></i></a>
+                    <a href="#" target="_blank" title="Facebook"><i class="fa-brands fa-facebook fa-lg" ></i></a>
+                    <a href="#" target="_blank" title="Instagram"><i class="fa-brands fa-instagram fa-lg"></i></a>
+                </nav>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

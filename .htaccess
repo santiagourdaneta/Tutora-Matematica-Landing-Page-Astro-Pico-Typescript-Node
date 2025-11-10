@@ -1,0 +1,43 @@
+# ----------------------------------------------------
+# 1. Configuración de Encabezados de Seguridad Críticos
+# ----------------------------------------------------
+
+# HTTPS Obligatorio: HTTP Strict Transport Security (HSTS)
+# Fuerz a las futuras conexiones del navegador a usar siempre HTTPS por 1 año.
+# ¡IMPORTANTE! Solo activa esto si tu sitio ya está 100% en HTTPS.
+Header always set Strict-Transport-Security "max-age=31536000; includeSubDomains"
+
+# Aislamiento de Origen: Cross-Origin-Opener-Policy (COOP)
+# Ayuda a aislar el documento de ventanas emergentes para prevenir ataques de canal lateral.
+Header always set Cross-Origin-Opener-Policy "same-origin"
+
+# Política de Seguridad de Contenido (CSP)
+# Protege contra XSS, Clickjacking y XSS basado en DOM (con Trusted Types).
+# NOTA: Este CSP está ajustado para permitir los orígenes de tus fuentes:
+# - fonts.googleapis.com (Google Fonts CSS)
+# - fonts.gstatic.com (Google Fonts WOFF2)
+# - cdnjs.cloudflare.com (Font Awesome)
+# - cdn.jsdelivr.net (Pico.css)
+Header always set Content-Security-Policy "require-trusted-types-for 'script'; default-src 'self'; script-src 'self'; style-src 'self' fonts.googleapis.com cdnjs.cloudflare.com cdn.jsdelivr.net; font-src 'self' fonts.gstatic.com cdnjs.cloudflare.com; frame-ancestors 'self';"
+
+# Control de Framing (Alternativa o complemento al CSP)
+# Previene el Clickjacking. Usamos DENY para bloquear la incrustación desde cualquier sitio.
+# Si ya usas 'frame-ancestors 'self'' en el CSP, este es opcional, pero seguro de tener.
+Header always set X-Frame-Options "DENY"
+
+# ----------------------------------------------------
+# 2. Recomendaciones de Rendimiento
+# ----------------------------------------------------
+
+# Cache de Recursos Estáticos (Ejemplo)
+# Mejora el Performance Score al darle una vida útil larga a los archivos que no cambian.
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresByType text/css "access plus 1 month"
+    ExpiresByType application/javascript "access plus 1 month"
+    ExpiresByType image/jpg "access plus 1 year"
+    ExpiresByType image/jpeg "access plus 1 year"
+    ExpiresByType image/gif "access plus 1 year"
+    ExpiresByType image/png "access plus 1 year"
+    ExpiresByType application/font-woff2 "access plus 1 year"
+</IfModule>
